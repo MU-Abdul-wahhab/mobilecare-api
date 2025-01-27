@@ -2,17 +2,6 @@ const { body } = require("express-validator");
 const User = require("../models/userModel");
 const appError = require("../utils/appError");
 
-exports.checkUserExists = async (req, res, next) => {
-  const { email } = req.body;
-
-  const user = await User.findOne({ email });
-  if (user) {
-    return next(new appError("This User already Exist", 400));
-  }
-
-  next();
-};
-
 exports.signUp = [
   body("email", "Email is required")
     .isEmail()
@@ -45,13 +34,18 @@ exports.signUp = [
     .isAlphanumeric()
     .isLength({ min: 8, max: 20 })
     .withMessage("Password Should Contain between 8 and 20 Charactors"),
-  body("passwordConfirm", "password Confirm is Required").isAlphanumeric().custom(
-    (value, { req }) => {
+  body("passwordConfirm", "password Confirm is Required")
+    .isAlphanumeric()
+    .custom((value, { req }) => {
       if (value !== req.body.password) {
         return Promise.reject("Password Does Not Match");
       }
 
       return true;
-    }
-  ),
+    }),
+];
+
+exports.login = [
+  body("email", "Email is required").isEmail(),
+  body("password", "password is required").isAlphanumeric(),
 ];
