@@ -9,6 +9,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const globalError = require('./controller/errorController');
 
+
 const limit = rateLimiter({
   windowMs: 5 * 60 * 1000,
   limit: 5,

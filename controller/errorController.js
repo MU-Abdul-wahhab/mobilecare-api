@@ -10,13 +10,13 @@ const sendDevError = (err, res) => {
 const sendProdError = (err, res) => {
   if (err.isOperational) {
     res.status(err.statusCode).json({
-        status : err.status,
-        message : err.message
+      status: err.status,
+      message: err.message,
     });
-  }else{
+  } else {
     res.status(500).json({
-        status : 'fail',
-        message : 'Something went wrong'
+      status: "fail",
+      message: "Something went wrong",
     });
   }
 };
