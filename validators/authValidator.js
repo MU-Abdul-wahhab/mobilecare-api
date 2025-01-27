@@ -1,6 +1,5 @@
 const { body } = require("express-validator");
 const User = require("../models/userModel");
-const appError = require("../utils/appError");
 
 exports.signUp = [
   body("email", "Email is required")
@@ -46,6 +45,27 @@ exports.signUp = [
 ];
 
 exports.login = [
-  body("email", "Email is required").isEmail(),
+  body("email", "Email is required")
+    .isEmail()
+    .custom(async (email, { req }) => {
+      return User.findOne({ email }).then((user) => {
+        if (!user) {
+          return Promise.reject("No User Found");
+        } else {
+          return true;
+        }
+      });
+    }),
   body("password", "password is required").isAlphanumeric(),
+];
+
+exports.refreshToken = [
+  body("refreshToken", "Refresh Token Is required")
+    .isString()
+    .custom((refreshToken, { req }) => {
+      if (!refreshToken) {
+        return Promise.reject("Access Denied");
+      }
+      return true;
+    }),
 ];

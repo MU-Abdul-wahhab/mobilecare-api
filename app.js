@@ -12,7 +12,7 @@ const globalError = require('./controller/errorController');
 
 const limit = rateLimiter({
   windowMs: 5 * 60 * 1000,
-  limit: 5,
+  limit: 50,
   message: "Too Many Request From the Client",
 });
 

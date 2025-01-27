@@ -23,4 +23,6 @@ route.post(
   authController.logIn
 );
 
+route.post('/refresh-token' , authValidator.refreshToken, globalMiddleware.checkError ,authMiddleware.auth , authController.refreshToken);
+
 module.exports = route;
